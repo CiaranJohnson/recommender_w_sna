@@ -64,11 +64,11 @@ class random_walk_restart():
         sorted_d = sorted(d.items(), key=operator.itemgetter(1), reverse=True)
         result_list = [k[0] for k in sorted_d][:3]
         # print(result_list)
-        id_list = []
+        id_dict = {}
         for result in result_list:
-            id_list.append(user_list[result])
+            id_dict[user_list[result]] = x[result]
         # print(id_list)
-        return id_list
+        return id_dict
 
 
 rwr = random_walk_restart()

@@ -65,6 +65,15 @@ class cf_me:
         user_list = self.user_artists.loc[self.user_artists['user_id'] == user_id]['artist_id'].tolist()
         # print("User List: " + str(user_list))
         # print("Rec List: " + str(rec_list))
+
+        print("Your recommendations are: ")
+        print("***************************************")
+        for rec in rec_list:
+            print(self.artists.loc[self.artists['id'] == rec]['name'].item())
+            # print(str(rec) + ": " + str(rec_list[rec]))
+        
+        print("*************************************** \n")
+
         hits = set(user_list) & set(rec_list)
         return hits
 
@@ -122,17 +131,10 @@ class cf_me:
         bar.finish()
 
         rating_dict = {k: v for k, v in sorted(rating_dict.items(), key=lambda item: item[1], reverse = True)}
-        print(rating_dict)
+        # print(rating_dict)
 
         rec_list = dict(islice(rating_dict.items(), 20))
 
-        print("Your recommendations are: \n")
-        print("***************************************")
-        for rec in rec_list:
-            print(self.artists.loc[self.artists['id'] == rec]['name'].item())
-            # print(str(rec) + ": " + str(rec_list[rec]))
-        
-        print("*************************************** \n")
         hits = self.compare_list(user_id, rec_list)
         print(hits)
         return rec_list, hits

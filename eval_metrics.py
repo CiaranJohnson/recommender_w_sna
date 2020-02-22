@@ -6,11 +6,6 @@ from surprise.model_selection import cross_validate
 import numpy as np
 import pandas as pd
 
-from sklearn.neighbors import NearestNeighbors
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import log_loss
-
 from scipy.stats import pearsonr
 from numpy import corrcoef
 
