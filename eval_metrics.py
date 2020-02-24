@@ -9,8 +9,7 @@ import pandas as pd
 from scipy.stats import pearsonr
 from numpy import corrcoef
 
-import math
-import pre_process 
+import math 
 from itertools import islice
 
 from scipy.sparse import lil_matrix

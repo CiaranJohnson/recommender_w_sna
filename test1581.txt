@@ -1,0 +1,6 @@
+Alpha: 0.5 Beta: 0.25 Gamma: 0.25
+Weight type: combined restart probability: 0.5
+
+Rec List: {2562: array([0.]), 1410: array([0.]), 8068: array([0.]), 16404: array([0.]), 278: array([0.]), 153: array([0.]), 154: array([0.]), 157: array([0.]), 30: array([0.]), 159: array([0.]), 14750: array([0.]), 418: array([0.]), 1061: array([0.]), 7079: array([0.]), 6439: array([0.]), 2605: array([0.]), 3502: array([0.]), 173: array([0.]), 1072: array([0.]), 1713: array([0.])}
+
+ Hits: {173}

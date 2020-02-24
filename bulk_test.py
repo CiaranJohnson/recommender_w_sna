@@ -13,7 +13,7 @@ if __name__ == "__main__":
         gamma = 0
         weight_type = "combined"
         subset =    False
-        restart_prob = 0
+        restart_prob = 0.5
     except IndexError:
         print("Usage: " + os.path.basename(__file__) + " <user_a> <alpha> <beta> <gamma> <weight_type> <subset> <restart_prob>")
         sys.exit(1)
@@ -23,10 +23,10 @@ if __name__ == "__main__":
     rwr = random_walk_restart()
 
 for user_a in users:
-    file_name = "test"+user_a+".txt"
+    file_name = "test_baseline_"+str(user_a)+".txt"
     f = open(file_name, "w")
-    f.write("Alpha: " + alpha + " Beta: "+ beta + " Gamma: " + gamma)
-    f.write("Weight type: " + weight_type + " restart probability: " + restart_prob)
+    f.write("Alpha: " + str(alpha) + " Beta: "+ str(beta) + " Gamma: " + str(gamma) + "\n")
+    f.write("Weight type: " + str(weight_type) + " restart probability: " + str(restart_prob) + "\n\n")
     if restart_prob == 0:
         print("No Random Walk with Restart")
         if weight_type == "combined":
@@ -37,7 +37,7 @@ for user_a in users:
             print("Combined")
             combined_weights = weight_mat.combined_weights(alpha, beta, gamma, user_a, subset)
             rec_list, hits = cf_rec.recommendations(user_a, combined_weights)
-            f.write("Rec List: " + rec_list + " Hits: " + hits)
+            f.write("Rec List: " + str(rec_list) + "\n\n" + " Hits: " + str(hits))
             f.close()
 
         elif weight_type == "ratings":
@@ -127,4 +127,7 @@ for user_a in users:
 
         hits = cf_rec.compare_list(user_a, rec_list)
         print(hits)
+
+        f.write("Rec List: " + str(rec_list) + "\n\n" + " Hits: " + str(hits))
+        f.close()
 

@@ -6,7 +6,7 @@ import operator
 
 class random_walk_restart():
     def __init__(self):
-        self.user_friends = pd.read_csv('user_friends.dat', sep='\t', names=['user_id','friend_id'], skiprows=1)
+        self.user_friends = pd.read_csv('lastFmData/user_friends.dat', sep='\t', names=['user_id','friend_id'], skiprows=1)
 
 
     def get_path(self, restart_prob, curr_node):

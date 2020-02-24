@@ -14,8 +14,7 @@ from sklearn.metrics import log_loss
 from scipy.stats import pearsonr
 from numpy import corrcoef
 
-import math
-import pre_process 
+import math 
 from itertools import islice
 
 from progress.bar import Bar
