@@ -8,9 +8,9 @@ from itertools import islice
 if __name__ == "__main__":
     try:
         users = [6,40,133,332,491,925,1084,1136,1301,1581]
-        alpha = 0
-        beta = 0.5
-        gamma = 0.5
+        alpha = 0.5
+        beta = 0.25
+        gamma = 0.25
         weight_type = "combined"
         subset =    False
         restart_prob = 0
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     rwr = random_walk_restart()
 
 for user_a in users:
-    file_name = "test_half_bg_"+str(user_a)+".txt"
+    file_name = "results/user_" + str(user_a) + "/test_big_Alpha_"+str(user_a)+".txt"
     f = open(file_name, "w")
     f.write("Alpha: " + str(alpha) + " Beta: "+ str(beta) + " Gamma: " + str(gamma) + "\n")
     f.write("Weight type: " + str(weight_type) + " restart probability: " + str(restart_prob) + "\n\n")
@@ -47,7 +47,6 @@ for user_a in users:
         else:
             print(weight_type + " is an invalid weight type.\nEnter either: combined or rating")
             sys.exit(1)
-        cf_rec.recommendations(user_a, combined_weights)
     else:
         print("SNA")
         top_influencers = rwr.n_top_influencers(user_a, restart_prob)
