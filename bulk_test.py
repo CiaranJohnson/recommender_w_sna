@@ -7,11 +7,18 @@ from itertools import islice
 
 if __name__ == "__main__":
     try:
+<<<<<<< HEAD
         # users = [6,40,133,332,491,925,1084,1136,1301,1581]
         users = [332,491,925,1084,1136,1301,1581]
         alpha = 0
         beta = 1
         gamma = 0
+=======
+        users = [6,40,133,332,491,925,1084,1136,1301,1581]
+        alpha = 0.5
+        beta = 0.25
+        gamma = 0.25
+>>>>>>> 5443fd0c5f63c0ce09b5b809bd24aa3790cb82b0
         weight_type = "combined"
         subset =    False
         restart_prob = 0
@@ -24,7 +31,11 @@ if __name__ == "__main__":
     rwr = random_walk_restart()
 
 for user_a in users:
+<<<<<<< HEAD
     file_name = "test_no_sna_"+str(user_a)+".txt"
+=======
+    file_name = "results/user_" + str(user_a) + "/test_big_Alpha_"+str(user_a)+".txt"
+>>>>>>> 5443fd0c5f63c0ce09b5b809bd24aa3790cb82b0
     f = open(file_name, "w")
     f.write("Alpha: " + str(alpha) + " Beta: "+ str(beta) + " Gamma: " + str(gamma) + "\n")
     f.write("Weight type: " + str(weight_type) + " restart probability: " + str(restart_prob) + "\n\n")
