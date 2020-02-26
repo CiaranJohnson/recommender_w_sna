@@ -23,6 +23,7 @@ if __name__ == "__main__":
     rwr = random_walk_restart()
 
 for user_a in users:
+
     file_name = "results/user_" + str(user_a) + "/test_big_Alpha_"+str(user_a)+".txt"
     f = open(file_name, "w")
     f.write("Alpha: " + str(alpha) + " Beta: "+ str(beta) + " Gamma: " + str(gamma) + "\n")
