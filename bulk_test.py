@@ -1,17 +1,19 @@
 import CF_rec_me as cf 
 import eval_metrics as weight_calc
 from random_walk_w_restart import random_walk_restart
+import friend_and_fof as FoF
 import sys
 import os
 from itertools import islice
+import pandas as pd
 
 if __name__ == "__main__":
     try:
         users = [6,40,133,332,491,925,1084,1136,1301,1581]
         alpha = 0.5
-        beta = 0.25
+        beta = 2
         gamma = 0.25
-        weight_type = "combined"
+        weight_type = "fof"
         subset =    False
         restart_prob = 0
     except IndexError:
@@ -21,10 +23,11 @@ if __name__ == "__main__":
     weight_mat = weight_calc.weight_calc()
     cf_rec = cf.cf_me()
     rwr = random_walk_restart()
+    fof = FoF.FriendsAndFof()
 
 for user_a in users:
 
-    file_name = "results/user_" + str(user_a) + "/test_big_Alpha_"+str(user_a)+".txt"
+    file_name = "results/user_" + str(user_a) + "/test_fof_"+str(user_a)+".txt"
     f = open(file_name, "w")
     f.write("Alpha: " + str(alpha) + " Beta: "+ str(beta) + " Gamma: " + str(gamma) + "\n")
     f.write("Weight type: " + str(weight_type) + " restart probability: " + str(restart_prob) + "\n\n")
@@ -45,6 +48,60 @@ for user_a in users:
             print("Ratings")
             k = 20
             combined_weights = cf_rec.knn(user_a, k)
+        elif weight_type == "fof":
+
+            print("FoF")
+            friend_list = fof.get_friends(user_a)
+            # artist_dict, unique_tag_count = fof.essential_tags()
+            # friend_list.insert(0, user_a)
+            # print("Friend list after adding target user: " + str(friend_list))
+            # spare_mat, friend_index = fof.reduce_dimensions(artist_dict, unique_tag_count, friend_list)
+            # clusters = fof.svd_on_tags(spare_mat)
+            # user_index = friend_index[user_a]
+            # user_cluster = clusters[user_index]
+            # print("Target user cluster: " + str(clusters[user_index]))
+            # cluster_friends = []
+            # for friend in friend_index:
+            #     mates_index = friend_index[friend]
+            #     if clusters[mates_index] == user_cluster:
+            #         cluster_friends.append(friend)
+            # print("Cluster friends: " + str(cluster_friends))
+            friend_tag_weight = {}
+            similar_friend = []
+            for friend in friend_list:
+                friend_tag_weight[friend] = weight_mat.get_fraction_tag(user_a, friend)
+                if friend_tag_weight[friend] > 0:
+                    similar_friend.append(friend)
+            print("Similar Friend: " + str(similar_friend))
+            f.write("Similar Friend: " + str(similar_friend) + "\n")
+
+            print("Friend tag weights: " + str(friend_tag_weight))
+            tag_weight = fof.handle_friend_rec("fof", user_a)
+            print(tag_weight)
+
+            sim_weights = pd.Series()
+            if len(similar_friend) > 0:
+                print("Sim Friends baby")
+                sim_weights = fof.get_sim_friend_weight(similar_friend)
+
+            alpha_friend = tag_weight.multiply(alpha)
+            beta_friend = sim_weights.multiply(beta)
+
+            total_weights = alpha_friend.add(beta_friend, fill_value=0)
+
+            rec_list = fof.get_top_artists(total_weights)
+            print("Rec List: " + str(rec_list))
+            hits = cf_rec.compare_list(user_a, rec_list)
+            f.write("Rec List: " + str(rec_list) + "\n\n" + " Hits: " + str(hits))
+            f.close()
+
+
+        elif weight_type == "friends":
+            print("Friends")
+            rec_list = fof.handle_friend_rec("friends", user_a)
+            hits = cf_rec.compare_list(user_a, rec_list)
+            f.write("Rec List: " + str(rec_list) + "\n\n" + " Hits: " + str(hits))
+            f.close()
         else:
             print(weight_type + " is an invalid weight type.\nEnter either: combined or rating")
             sys.exit(1)

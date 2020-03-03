@@ -1,0 +1,7 @@
+Alpha: 0.5 Beta: 2 Gamma: 0.25
+Weight type: fof restart probability: 0
+
+Similar Friend: [1075]
+Rec List: [89, 289, 288, 300, 292, 67, 466, 295, 333, 701, 302, 55, 306, 461, 65, 679, 498, 154, 349, 190]
+
+ Hits: {65, 154, 190}
