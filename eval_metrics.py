@@ -31,27 +31,7 @@ class weight_calc:
         self.user_taggedartists_timestamps = pd.read_csv('lastFmData/user_taggedartists-timestamps.dat', sep='\t', names=['user_id','artist_id','tag_id','timestamp'], skiprows=1)
 
 
-    def weight_a_u(self, a_value, u_value):
-        user_a = self.user_artists.loc[self.user_artists['user_id'] == a_value]
-        user_b = self.user_artists.loc[self.user_artists['user_id'] == u_value]
 
-        len_artist = len(self.artists.index)
-        a_rating = np.zeros(len_artist)
-        b_rating = np.zeros(len_artist)
-
-        for art_id in user_a['artist_id']:
-            a_index = self.artists.index[self.artists['id'] == art_id].tolist()
-            art_inp = user_a.loc[user_a['artist_id'] == art_id]
-            a_rating[a_index] = art_inp['weight']
-
-        for art_id in user_b['artist_id']:
-            b_index = self.artists.index[self.artists['id'] == art_id].tolist()
-            art_inp = user_b.loc[user_b['artist_id'] == art_id]
-            b_rating[b_index] = art_inp['weight']
-
-        p_value,tail_val = pearsonr(a_rating, b_rating)
-        # print(p_value)
-        return p_value, b_rating, user_b['weight'].mean()
 
     def weight_tags(self, a_value, u_value):
         tags_a = self.user_taggedartists.loc[self.user_taggedartists['user_id'] ==  a_value]
@@ -106,7 +86,7 @@ class weight_calc:
         combined_tags = pd.concat([a_tags, u_tags])
         tagged_artists = combined_tags['artist_id'].unique()
 
-        avg_play = self.average_playcount()
+        # avg_play = self.average_playcount()
 
         tag_weight = 0
 
@@ -155,7 +135,7 @@ class weight_calc:
         return p_value
 
     
-    def weight_a_u(self, a_value, u_value):
+    def get_rating_weights(self, a_value, u_value):
         user_a = self.user_artists.loc[self.user_artists['user_id'] == a_value]
         user_b = self.user_artists.loc[self.user_artists['user_id'] == u_value]
 
@@ -176,6 +156,7 @@ class weight_calc:
         p_value,tail_val = pearsonr(a_rating, b_rating)
         return p_value
 
+
     def combined_weights(self, alpha, beta, gamma, user_a, subset):
         user_weights = {}
         if subset:
@@ -190,13 +171,8 @@ class weight_calc:
         for user_u in users:
             bar.next()
             friend_weight = self.get_friend_weights(user_a, user_u, friend_martix, user_list)
-            rating_weight = self.weight_a_u(user_a, user_u)
+            rating_weight = self.get_rating_weights(user_a, user_u)
             tag_weight = self.get_fraction_tag(user_a, user_u)
-            # print()
-            # print("Friend weight: " + str(friend_weight))
-            # print("Rating weight: " + str(rating_weight))
-            # print("Tag weight: " + str(tag_weight))
-
             user_weights[user_u] = alpha * rating_weight + beta * friend_weight + gamma * tag_weight
         bar.finish()
 
