@@ -1,8 +1,8 @@
 import pandas as pd
-from surprise import SVD, SVDpp, SlopeOne, NMF, NormalPredictor, KNNBaseline, KNNBasic, KNNWithMeans, KNNWithZScore, BaselineOnly, CoClustering
-from surprise import Dataset
-from surprise.reader import Reader
-from surprise.model_selection import cross_validate
+# from surprise import SVD, SVDpp, SlopeOne, NMF, NormalPredictor, KNNBaseline, KNNBasic, KNNWithMeans, KNNWithZScore, BaselineOnly, CoClustering
+# from surprise import Dataset
+# from surprise.reader import Reader
+# from surprise.model_selection import cross_validate
 import numpy as np
 import pandas as pd
 
