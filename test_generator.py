@@ -12,7 +12,11 @@ class test_generator:
 
     def get_random_user(self):
         test_list = []
+        validation_set = [6,40,133,332,491,925,1084,1136,1301,1581]
+        test_set = [912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
+        full_set = [6, 40, 133, 332, 491, 925, 1084, 1136, 1301, 1581, 912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
         user_list = list(self.user_artists['user_id'].unique())
+        user_list = [i for i in user_list if i not in validation_set]
         print(len(user_list))
         while len(test_list) < 10:
             user = random.randint(0, len(user_list))
@@ -24,6 +28,28 @@ class test_generator:
                 test_list.append(user)
                 user_list.remove(user)
         print(test_list)
+
+    def pick_half_ratings(self):
+        full_set = [6, 40, 133, 332, 491, 925, 1084, 1136, 1301, 1581, 912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
+        for user in full_set:
+            file_name = "test_data/rating_set_"+str(user)+".txt"
+            f = open(file_name, "w")
+            f.write("User: " + str(user) + "\n\n")
+            print(f"User: ", user)
+            art_list = list(self.user_artists.loc[self.user_artists['user_id']==user]['artist_id'].unique())
+            f.write("Art List: " + str(art_list) + "\n\n")
+            print(f"Art List: ", art_list)
+            user_list = []
+            while len(user_list) < 25:
+                art_num = random.randint(0, len(art_list)-1)
+                # print(art_num)
+                art = art_list[art_num]
+                user_list.append(art)
+                art_list.remove(art)
+            f.write("User List: " + str(user_list) + "\n\n")
+            print(f"User List: ", user_list)
+
+
 
 
     def how_many_friends(self, user):
@@ -42,4 +68,5 @@ class test_generator:
 
 if __name__ == "__main__":
     test_gen = test_generator()
-    test_gen.get_random_user()
+    # test_gen.get_random_user()
+    test_gen.pick_half_ratings()

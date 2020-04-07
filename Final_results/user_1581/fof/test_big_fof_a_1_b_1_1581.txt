@@ -1,0 +1,8 @@
+Alpha: 1 Beta: 1 Gamma: 1
+Weight type: fof restart probability: 0
+
+Similar Friend: []
+Rec List: [89, 498, 227, 289, 190, 288, 67, 65, 333, 295, 300, 229, 154, 228, 292, 173, 439, 207, 302, 55]
+
+ Hits: {228, 173, 439}Time to generate recommendations: 1.8254811763763428
+

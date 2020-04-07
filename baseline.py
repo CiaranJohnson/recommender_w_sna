@@ -32,8 +32,12 @@ class baseline:
     
     def find_hits(self, users, rec_list):
         for user in users:
+            file_name = "Final_results/user_" + str(user) + "/test_baseline_popular_"+ str(user) +".txt"
+            f = open(file_name, "w")
             user_list = self.user_artists.loc[self.user_artists['user_id'] == user]['artist_id'].tolist()
-            print(set(user_list) & set(rec_list))
+            print(str(user) + ": " + str(set(user_list) & set(rec_list)))
+            f.write("Rec List: " + str(rec_list) + "\n\n" + " Hits: " + str(set(user_list) & set(rec_list)))
+            f.close()
         
 
     def display_list(self, rec_list):
@@ -50,7 +54,7 @@ class baseline:
 if __name__ == "__main__":
     baseline = baseline()
     cf = CF_rec_me.cf_me()
-    users = [6,40,133,332,491,925,1084,1136,1301,1581]
+    users = [6, 40, 133, 332, 491, 925, 1084, 1136, 1301, 1581, 912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
     
     removed_users = baseline.remove_test_users(users)
     top_artists = baseline.get_top_20_artists(removed_users)

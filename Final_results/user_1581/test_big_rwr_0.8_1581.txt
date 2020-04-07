@@ -1,0 +1,7 @@
+Alpha: 0.8 Beta: 0.15 Gamma: 0.05
+Weight type: friends restart probability: 0.8
+
+Rec List: {257: array([0.]), 2562: array([0.]), 181: array([0.]), 789: array([0.]), 153: array([0.]), 30: array([0.]), 159: array([0.]), 288: array([0.]), 289: array([0.]), 14750: array([0.]), 1061: array([0.]), 679: array([0.]), 6439: array([0.]), 173: array([0.]), 3886: array([0.]), 1072: array([0.]), 1713: array([0.]), 51: array([0.]), 52: array([0.]), 53: array([0.])}
+
+ Hits: {173}Time to generate recommendations: 3368.539395093918
+

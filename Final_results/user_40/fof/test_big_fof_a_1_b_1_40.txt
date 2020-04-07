@@ -1,0 +1,3 @@
+Alpha: 1 Beta: 1 Gamma: 1
+Weight type: fof restart probability: 0
+

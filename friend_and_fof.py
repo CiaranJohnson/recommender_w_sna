@@ -21,7 +21,7 @@ class FriendsAndFof:
         return list(series.nlargest(n=20).keys())
 
 
-    
+    # find the users friends and all the artists that their friends listen to
     def find_friends_artists(self, user_u):
         u_friends = self.user_friends.loc[self.user_friends["user_id"] == user_u]
         u_friend_list = list(u_friends['friend_id'])
@@ -36,7 +36,7 @@ class FriendsAndFof:
         count_artist = artist_pd.groupby('artist_id')['weight'].count()
         return count_artist, sum_artist
     
-    def get_rec_list(self, count_artist, sum_artist):
+    def get_rec_list(self, count_artist, sum_artist, remove_artist):
         print(type(count_artist))
         rec = []
         i = 1
@@ -46,44 +46,58 @@ class FriendsAndFof:
             if(len(rec) + len(max_list) > 20):
                 k_left = 20 - len(rec)
                 max_list = self.find_best_values(max_list, sum_artist, k_left)
+            
+            max_list = [i for i in max_list if i not in remove_artist] 
             rec.extend(max_list)
             count_artist = count_artist[count_artist != max_count]
             i = i+1
         print(rec)
         return rec
-    
-        def get_sum_count(self, artist_pd):
-            sum_artist = artist_pd.groupby('artist_id')['weight'].sum()
-            count_artist = artist_pd.groupby('artist_id')['weight'].count()
-            return count_artist, sum_artist
+
     
 
 
-    def handle_friend_rec(self, type_rec, user_u):
+    def handle_friend_rec(self, type_rec, user_u, count_only=True, remove_artist = []):
         if (type_rec == "fof"):
             print("Fof")
+
+            # Get a list of all the users friends and the artists they listen to 
             u_friends = self.user_friends.loc[self.user_friends["user_id"] == user_u]
             artist_pd = self.find_friends_artists(user_u)
+
+            # get the total users that listen to each artist and the sum of their
+            # time listened to each
             count_artist, sum_artist = self.get_sum_count(artist_pd)
             max_rating = artist_pd['weight'].max()
 
+            # Repeat the steps for all the friends of the target users friends
             for user in u_friends['friend_id']:
                 artist_pd = self.find_friends_artists(user)
                 friend_count_artist, friend_sum_artist = self.get_sum_count(artist_pd)
                 count_artist = count_artist.add(friend_count_artist, fill_value = 0)
                 sum_artist = sum_artist.add(friend_sum_artist, fill_value = 0)
+                
+                # this does not find 
                 friend_max_rating = artist_pd['weight'].max()
                 if friend_max_rating > max_rating:
                     max_rating = friend_max_rating
         elif(type_rec == "friends"):
-            count_artist, sum_artist = self.find_friends_artists(user_u)
+            # Get just the target users friends recommendations
+            artist_pd = self.find_friends_artists(user_u)
+            count_artist, sum_artist = self.get_sum_count(artist_pd)
         else:
-            print("Ohh no something went wrong")
-        ratio = sum_artist.divide(max_rating)
-        tag_weights = count_artist.add(ratio)
-        # rec_list = self.get_rec_list(count_artist, sum_artist)
-        # return rec_list, count_artist, sum_artist
-        return tag_weights 
+            print("Handle Friend Rec error: fof or friends")
+            
+        
+        if count_only:
+            return self.get_rec_list(count_artist, sum_artist, remove_artist)
+        else:
+            # divide the sum of all artist by the highest listened to artist 
+            # add this to the count
+            # This weights listen count highly
+            ratio = sum_artist.divide(max_rating)
+            friend_weights = count_artist.add(ratio)
+        return friend_weights 
     
     def get_sim_friend_weight(self, u_friend_list):
         artist_pd = pd.DataFrame()
@@ -191,11 +205,11 @@ class FriendsAndFof:
 
 
 
-fof = FriendsAndFof()
-type_rec = "fof"
-user_u = 6
-# fof.create_scores(user_u)
-fof.handle_friend_rec(type_rec, user_u)
+# fof = FriendsAndFof()
+# type_rec = "fof"
+# user_u = 6
+# # fof.create_scores(user_u)
+# fof.handle_friend_rec(type_rec, user_u)
 # artist_dict, unique_tag_count = fof.essential_tags()
 # all_users = fof.get_users(True)
 # sparse_tag, user_count_mapping = fof.reduce_dimensions(artist_dict, unique_tag_count, all_users)
