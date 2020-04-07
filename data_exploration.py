@@ -30,7 +30,7 @@ class test_generator:
 
 
 if __name__ == "__main__":
-    userlist = [6,40,133,332,491,925,1084,1136,1301,1581]
+    userlist = [3, 12, 128, 478, 582, 912, 1278, 1375, 1458, 1509]
     test_gen = test_generator()
     test_gen.get_user_info(userlist)    
 
