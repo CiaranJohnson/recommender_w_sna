@@ -59,6 +59,7 @@ class random_walk_restart():
         return x, user_list
     
     def n_top_influencers(self, start_node, restart_prob):
+        print("Random Walk with Restart")
         x, user_list = self.random_w_r(start_node, restart_prob)
         d = {k:v for k, v in enumerate(x)}
         sorted_d = sorted(d.items(), key=operator.itemgetter(1), reverse=True)
@@ -71,10 +72,10 @@ class random_walk_restart():
         return id_dict
 
 
-rwr = random_walk_restart()
-start_node = 2
-restart_prob = 0.2
-rwr.n_top_influencers(start_node, restart_prob)
+# rwr = random_walk_restart()
+# start_node = 6
+# restart_prob = 0.2
+# print(rwr.n_top_influencers(start_node, restart_prob))
 # user_friends = get_data()
 # get_path(user_friends, restart_prob, start_node) 
 # get_adjacency_matrix(user_friends)

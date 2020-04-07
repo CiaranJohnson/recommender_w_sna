@@ -32,27 +32,6 @@ class weight_calc:
         
 
 
-    # def weight_a_u(self, a_value, u_value):
-    #     user_a = self.user_artists.loc[self.user_artists['user_id'] == a_value]
-    #     user_b = self.user_artists.loc[self.user_artists['user_id'] == u_value]
-
-    #     len_artist = len(self.artists.index)
-    #     a_rating = np.zeros(len_artist)
-    #     b_rating = np.zeros(len_artist)
-
-    #     for art_id in user_a['artist_id']:
-    #         a_index = self.artists.index[self.artists['id'] == art_id].tolist()
-    #         art_inp = user_a.loc[user_a['artist_id'] == art_id]
-    #         a_rating[a_index] = art_inp['weight']
-
-    #     for art_id in user_b['artist_id']:
-    #         b_index = self.artists.index[self.artists['id'] == art_id].tolist()
-    #         art_inp = user_b.loc[user_b['artist_id'] == art_id]
-    #         b_rating[b_index] = art_inp['weight']
-
-    #     p_value,tail_val = pearsonr(a_rating, b_rating)
-    #     # print(p_value)
-    #     return p_value, b_rating, user_b['weight'].mean()
 
     def weight_tags(self, a_value, u_value):
         tags_a = self.user_taggedartists.loc[self.user_taggedartists['user_id'] ==  a_value]
@@ -107,7 +86,7 @@ class weight_calc:
         combined_tags = pd.concat([a_tags, u_tags])
         tagged_artists = combined_tags['artist_id'].unique()
 
-        avg_play = self.average_playcount()
+        # avg_play = self.average_playcount()
 
         tag_weight = 0
 
@@ -155,10 +134,9 @@ class weight_calc:
         p_value,tail_val = pearsonr(array_a[0], array_u[0])
         return p_value
 
-    
-    def weight_a_u(self, a_value, u_value):
-        # user_a = self.user_artists.loc[self.user_artists['user_id'] == a_value]
-        user_a = self.half_ratings_df.loc[self.half_ratings_df['user_id'] == a_value]
+        
+    def get_rating_weights(self, a_value, u_value):
+        user_a = self.user_artists.loc[self.user_artists['user_id'] == a_value]
         user_b = self.user_artists.loc[self.user_artists['user_id'] == u_value]
 
         len_artist = len(self.artists.index)
@@ -178,6 +156,7 @@ class weight_calc:
         p_value,tail_val = pearsonr(a_rating, b_rating)
         return p_value
 
+
     def combined_weights(self, alpha, beta, gamma, user_a, subset):
         print(self.user_artists)
         user_weights = {}
@@ -192,13 +171,8 @@ class weight_calc:
         for user_u in users:
             bar.next()
             friend_weight = self.get_friend_weights(user_a, user_u, friend_martix, user_list)
-            rating_weight = self.weight_a_u(user_a, user_u)
+            rating_weight = self.get_rating_weights(user_a, user_u)
             tag_weight = self.get_fraction_tag(user_a, user_u)
-            # print()
-            # print("Friend weight: " + str(friend_weight))
-            # print("Rating weight: " + str(rating_weight))
-            # print("Tag weight: " + str(tag_weight))
-
             user_weights[user_u] = alpha * rating_weight + beta * friend_weight + gamma * tag_weight
         bar.finish()
 
@@ -226,6 +200,7 @@ class weight_calc:
             for rating in user_ratings[user]:
                 rating_df = user_df.loc[user_df['artist_id'] == rating]
                 self.half_ratings_df = pd.concat([self.half_ratings_df, rating_df])
+        self.user_artists = pd.concat([self.user_artists, self.half_ratings_df])
                 
 
         

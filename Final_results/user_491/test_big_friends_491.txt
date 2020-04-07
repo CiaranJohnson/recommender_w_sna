@@ -1,0 +1,7 @@
+Alpha: 0 Beta: 0 Gamma: 0
+Weight type: friends restart probability: 0
+
+Rec List: [917, 198, 841, 1249, 1412, 918, 707, 1369, 1358, 1360, 1104, 1264, 947, 188, 706, 1523, 163, 854, 1274, 928]
+
+ Hits: {706, 163, 1412, 707, 841, 1358, 1360, 947, 1523, 917, 918, 1369}Time to generate recommendations: 0.016247034072875977
+

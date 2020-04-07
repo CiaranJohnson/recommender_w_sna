@@ -1,0 +1,7 @@
+Alpha: 0.8 Beta: 0.15 Gamma: 0.05
+Weight type: fof restart probability: 0.2
+
+Rec List: {72: array([7.70269e-318]), 198: array([6.36627e-318]), 917: array([4.961056e-318]), 614: array([2.6617e-318]), 63: array([1.88352e-318]), 67: array([1.48972e-318]), 1249: array([9.22356e-319]), 187: array([4.2164e-319]), 157: array([4.0066e-319]), 1131: array([3.64734e-319]), 942: array([2.8552e-319]), 1001: array([1.32543e-319]), 936: array([9.3324e-320]), 285: array([8.0483e-320]), 928: array([2.225e-320]), 1412: array([-1.857e-320]), 957: array([-5.409e-320]), 511: array([-7.373e-320]), 930: array([-1.3521e-319]), 289: array([-1.3673e-319])}
+
+ Hits: {285}Time to generate recommendations: 2985.510525226593
+

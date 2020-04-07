@@ -68,7 +68,8 @@ class cf_me:
         print("Your recommendations are: ")
         print("***************************************")
         for rec in rec_list:
-            print(self.artists.loc[self.artists['id'] == rec]['name'].item())
+            # print(self.artists.loc[self.artists['id'] == rec]['name'].item())
+            print(rec)
             # print(str(rec) + ": " + str(rec_list[rec]))
         
         print("*************************************** \n")
