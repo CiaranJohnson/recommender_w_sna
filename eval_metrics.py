@@ -201,6 +201,37 @@ class weight_calc:
                 rating_df = user_df.loc[user_df['artist_id'] == rating]
                 self.half_ratings_df = pd.concat([self.half_ratings_df, rating_df])
         self.user_artists = pd.concat([self.user_artists, self.half_ratings_df])
+
+    def add_users(self, user_list):
+        max_id = self.user_artists['user_id'].unique().max() + 1
+        for user in user_list:
+            print(user)
+
+            user_pd = self.user_artists.loc[self.user_artists['user_id'] == user]
+
+            tag_pd = self.user_taggedartists.loc[self.user_taggedartists['user_id'] == user]
+            
+            max_weight = self.user_artists['weight'].max() * 2
+            print(max_weight)
+            a_id = 0
+
+            for i in range(50):
+                overwrite_user = user_pd.replace({'user_id':user}, max_id)
+                overwrite_tag = tag_pd.replace({'user_id':user}, max_id)
+                fake_df = pd.DataFrame({'user_id':[max_id], 'artist_id':[0], 'weight':[max_weight]})
+                fake_friends = pd.DataFrame({'user_id':[max_id], 'friend_id':[max_id]})
+                overwrite_user = overwrite_user.append(fake_df)
+                max_id = max_id + 1
+                # print(overwrite_user)
+                # print(overwrite_tag)
+
+                self.user_artists = self.user_artists.append(overwrite_user)
+                self.user_taggedartists = self.user_taggedartists.append(overwrite_tag)
+                self.user_friends = self.user_friends.append(fake_friends)
+                # print(max_id)
+
+        # print(self.user_artists.loc[self.user_artists['artist_id'] == 0])
+        # print(self.user_taggedartists)
                 
 
         

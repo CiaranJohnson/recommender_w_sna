@@ -3,5 +3,5 @@ Weight type: friends restart probability: 0
 
 Rec List: [163, 65, 230, 707, 917, 188, 198, 920, 1412, 228, 233, 982, 190, 533, 173, 959, 412, 72, 436, 512]
 
- Hits: {72, 233, 533, 173}Time to generate recommendations: 0.05088305473327637
+ Hits: {72, 233, 533, 173}Time to generate recommendations: 0.043964385986328125
 

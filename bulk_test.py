@@ -40,18 +40,18 @@ class bulk_test:
         # }
 
         self.keep_user_ratings = {3: [],6: [],12: []
-        ,40:[1066, 1297, 1300],128:[]
-        ,133: [89, 288]
-        ,332: [292, 300, 333],478: []
-        ,491: [917, 841]
+        ,40:[],128:[]
+        ,133: []
+        ,332: [],478: []
+        ,491: []
         ,582: [],912: []
-        ,925: [227, 614]
-        ,1084: [64, 65, 56],1136: [288, 89, 292],1278: []
-        ,1301: [289, 288, 292, 295, 89, 67],1375: [],1458: [],1509: [],1581: [439, 217, 898]
+        ,925: []
+        ,1084: [],1136: [],1278: []
+        ,1301: [],1375: [],1458: [],1509: [],1581: []
         }
 
         self.weight_mat.remove_test_val(remove_user_list)
-        self.weight_mat.half_ratings(self.keep_user_ratings)
+        # self.weight_mat.half_ratings(self.keep_user_ratings)
 
 
     def weigthed_cf(self, alpha, beta, gamma, user_a, subset):
@@ -184,12 +184,12 @@ class bulk_test:
 
 if __name__ == "__main__":
     # users = [6,40,133,332,491,925,1084,1136,1301,1581]
-    users = [133, 491, 925]
+    users = [912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
     
     tests = bulk_test()
 
 
-    parameters = {'friend_remove_1':[0, 1, 0, 'friends', False, 0], 'cf_add_1': [0.8, 0.15, 0.05, 'combined', False, 0]}
+    parameters = {'attack_test_friends': [0.8, 0.15, 0.05, 'friends', False, 0, 'attack'], 'attack_test_ccf': [0.8, 0.15, 0.05, 'combined', False, 0, 'attack']}
     for p in parameters:
         print(p)
         alpha = parameters[p][0]
@@ -198,6 +198,12 @@ if __name__ == "__main__":
         weight_type = parameters[p][3]
         subset = parameters[p][4]
         restart_prob = parameters[p][5]
+        attack = parameters[p][6]
+
+        if attack == 'attack':
+                tests.cf_rec.add_users(users)
+                tests.weight_mat.add_users(users)
+                tests.fof.add_users(users)
 
         for user_a in users:
             print(f"User A: ",user_a)

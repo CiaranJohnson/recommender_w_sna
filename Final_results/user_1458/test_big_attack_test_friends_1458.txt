@@ -1,0 +1,7 @@
+Alpha: 0.8 Beta: 0.15 Gamma: 0.05
+Weight type: friends restart probability: 0
+
+Rec List: [65, 67, 227, 298, 707, 972, 1672, 289, 229, 1556, 614, 1104, 706, 1545, 1044, 439, 488, 230, 190, 913]
+
+ Hits: {289, 67}Time to generate recommendations: 0.023122310638427734
+
