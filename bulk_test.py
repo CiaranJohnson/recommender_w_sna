@@ -50,7 +50,7 @@ class bulk_test:
         ,1301: [],1375: [],1458: [],1509: [],1581: []
         }
 
-        self.weight_mat.remove_test_val(remove_user_list)
+        # self.weight_mat.remove_test_val(remove_user_list)
         # self.weight_mat.half_ratings(self.keep_user_ratings)
 
 
@@ -183,13 +183,13 @@ class bulk_test:
 
 
 if __name__ == "__main__":
-    # users = [6,40,133,332,491,925,1084,1136,1301,1581]
-    users = [912, 12, 128, 1458, 582, 3, 1375, 478, 1278, 1509]
+    users = [6,40,133,332,491,925,1084,1136,1301,1581]
+    # users = [3, 12, 128, 478, 582, 912, 1278, 1375, 1458, 1509]
     
     tests = bulk_test()
 
 
-    parameters = {'attack_test_friends': [0.8, 0.15, 0.05, 'friends', False, 0, 'attack'], 'attack_test_ccf': [0.8, 0.15, 0.05, 'combined', False, 0, 'attack']}
+    parameters = {'improved_beta_only': [0, 1, 0, 'combined', False, 0, 'no'], 'improved_gamma_only': [0, 0, 1, 'combined', False, 0, 'no']}
     for p in parameters:
         print(p)
         alpha = parameters[p][0]

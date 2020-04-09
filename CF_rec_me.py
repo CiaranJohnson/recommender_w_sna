@@ -113,33 +113,68 @@ class cf_me:
                 # wght_rating += (u_rating[item_i] - mean_u) * w_a_u
         return (wght_rating / sum_wght)
     
-    def recommendations(self, user_id, k_users):
+    # def recommendations(self, user_id, k_users):
         
-        # k_users = self.knn(user_id, k)
-        rating_dict = {}
-        artist_list = []
-        for user in k_users:
-            abc = self.user_artists.loc[self.user_artists['user_id'] == user]['artist_id'].tolist()
-            artist_list.extend(abc)
-        artist_list = list(dict.fromkeys(artist_list))
-        # artist_list = artist_list[:40]
+    #     # k_users = self.knn(user_id, k)
+    #     rating_dict = {}
+    #     artist_list = []
+    #     for user in k_users:
+    #         abc = self.user_artists.loc[self.user_artists['user_id'] == user]['artist_id'].tolist()
+    #         artist_list.extend(abc)
+    #     artist_list = list(dict.fromkeys(artist_list))
+    #     # artist_list = artist_list[:40]
 
-        bar = Bar('Processing', max=len(artist_list))
-        for artist_id in artist_list:
+    #     bar = Bar('Processing', max=len(artist_list))
+    #     for artist_id in artist_list:
+    #         bar.next()
+    #         rating_dict[artist_id] = self.sum_weights_knn(user_id, artist_id, k_users)
+    #     bar.finish()
+
+    #     rating_dict = {k: v for k, v in sorted(rating_dict.items(), key=lambda item: item[1], reverse = True)}
+    #     # print(rating_dict)
+
+    #     rec_list = dict(islice(rating_dict.items(), 20))
+
+    #     hits = self.compare_list(user_id, rec_list)
+    #     print(hits)
+    #     return rec_list, hits
+
+    
+
+    def recommendations(self, user_id, k_users):
+        rating_dict = {}
+
+        bar = Bar('Processing', max=len(k_users))
+        for user in k_users:
             bar.next()
-            rating_dict[artist_id] = self.sum_weights_knn(user_id, artist_id, k_users)
+            user_ratings = self.user_artists.loc[self.user_artists['user_id'] == user]
+            artist_list = user_ratings['artist_id'].tolist()
+
+            max_value = user_ratings['weight'].max()
+            min_value = user_ratings['weight'].min()
+
+            denom = max_value - min_value
+
+            for artist in artist_list:
+                artist_weight = user_ratings.loc[user_ratings['artist_id'] == artist]['weight'].item()
+
+                # Normalise the users rating
+                artist_rating = (artist_weight - min_value)/denom
+                user_score = artist_rating * k_users[user]
+
+                if artist in rating_dict:
+                    rating_dict[artist] = rating_dict[artist] + user_score
+                else:
+                    rating_dict[artist] = user_score
         bar.finish()
 
         rating_dict = {k: v for k, v in sorted(rating_dict.items(), key=lambda item: item[1], reverse = True)}
-        # print(rating_dict)
 
         rec_list = dict(islice(rating_dict.items(), 20))
-
         hits = self.compare_list(user_id, rec_list)
         print(hits)
+
         return rec_list, hits
-
-
 
 
     def add_users(self, user_list):
@@ -176,18 +211,14 @@ class cf_me:
 
 
 
-rating_weights = {428: 0.45536144763288433, 1210: 0.44519833251253693, 1866: 0.4389093553272231, 374: 0.43704009526254284, 
-1643: 0.4135033623870659, 1209: 0.40142996393956076, 1585: 0.39824791948978616, 1202: 0.33009835355386025, 
-1881: 0.32270479214152964, 761: 0.3055197638960583, 1102: 0.2912863296718431, 430: 0.2912366109702745, 
-612: 0.28810537850495277, 243: 0.2863466640791418, 788: 0.28229809464195776, 1074: 0.27793806442472835, 
-1600: 0.2711769687643835, 1327: 0.2696643816652784, 1514: 0.2692347775489213, 176: 0.2664651539669095}
+# rating_weights = {935: 6.378764636818178, 1929: 5.6488833785038155, 1103: 4.976958397288922, 1679: 4.548025744662862, 926: 3.410949757400132, 43: 2.215941792289245, 1723: 1.977124528807408, 1249: 1.9532033724272702, 264: 1.8890479337948862, 1191: 1.8528606087961175, 225: 1.8050647582932915, 1601: 1.4451149618915478, 1730: 1.3507889912179691, 544: 1.3314838531923932, 557: 1.3174211100507451, 117: 1.2755371527209487, 12: 1.2744469620255616, 747: 1.1612511962019518, 1604: 1.1428947197706218, 779: 1.1176786466133135}
 # combined_weights = {1191: 0.30319281068858867, 374: 0.2974552643113256, 428: 0.27128141448580945, 1866: 0.2674023267735103, 
 # 1210: 0.2672230770305728, 1585: 0.26036748320752856, 788: 0.25594983730101806, 1643: 0.2552996072686322, 
 # 117: 0.2468510845825198, 1202: 0.24116710238958536, 1881: 0.24092803936746082, 1209: 0.23771297599278768, 
 # 575: 0.23129140706378512, 290: 0.22528331171211907, 1900: 0.22398691352296723, 1327: 0.21440783412933517, 
 # 96: 0.209510888517916, 1230: 0.205819473597518, 176: 0.20234974865183386, 264: 0.1974249285746011}
 # cf = cf_me()
-# cf.recommendations(2, 20, rating_weights)
+# cf.recommendations(40, rating_weights)
 # print(cf.knn(2, 20))
 # cf.weight_a_u(2, 7)
 # cf.sum_weights(2, 50)

@@ -211,7 +211,7 @@ class FriendsAndFof:
 
             for i in range(50):
                 overwrite_user = user_pd.replace({'user_id':user}, max_id)
-                overwrite_tag = tag_pd.replace({'user_id':user}, max_id)sss
+                overwrite_tag = tag_pd.replace({'user_id':user}, max_id)
                 fake_df = pd.DataFrame({'user_id':[max_id], 'artist_id':[0], 'weight':[max_weight]})
                 fake_friends = pd.DataFrame({'user_id':[max_id], 'friend_id':[max_id]})
                 overwrite_user = overwrite_user.append(fake_df)

@@ -86,8 +86,6 @@ class weight_calc:
         combined_tags = pd.concat([a_tags, u_tags])
         tagged_artists = combined_tags['artist_id'].unique()
 
-        # avg_play = self.average_playcount()
-
         tag_weight = 0
 
         for artist in tagged_artists:
@@ -98,10 +96,10 @@ class weight_calc:
 
             common_tags = len(set(art_tag_a['tag_id']) & set(art_tag_u['tag_id']))
             if denom_a > 0 and denom_u > 0 and common_tags > 0:
-                if tag_weight == 0:
-                    tag_weight = 1
-                # tag_weight = tag_weight + (common_tags/denom_a * common_tags/denom_u) * avg_play
-                tag_weight = tag_weight * (common_tags/denom_a * common_tags/denom_u)
+                # if tag_weight == 0:
+                #     tag_weight = 1
+                # tag_weight = tag_weight * (common_tags/denom_a * common_tags/denom_u)
+                tag_weight = tag_weight + (common_tags/denom_a * common_tags/denom_u)
         return tag_weight
 
     
